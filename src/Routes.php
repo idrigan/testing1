@@ -2,7 +2,7 @@
 
 namespace Src;
 
-class Route
+class Routes
 {
 	
 	private $routes; 
@@ -23,24 +23,7 @@ class Route
    public function getRoutes(){
 		return $this->routes;   
    }
-  /* public function dispatch($routes,$url) {
-   
-   	
-    if (!preg_match("~^/entrega1/([^/]+)/(\d+)$~", $url, $matches) && !preg_match("~^/entrega1/(\d+)$~", $url, $matches) && !preg_match("~^/entrega1/([^/]+)$~", $url, $matches) ) {
-         return "NOT FOUND";
-    }
-	    
- 	if (preg_match('#^/([^/]+)$#', $url, $matches)) {
- 		return $matches[1];
-      
-    } elseif (preg_match('#^/([^/]+)/([^/]+)/([^/]+)$#', $url, $matches)) {
-    	return $matches[1];
-    
-    }
-    
-    return "NOT FOUND";
-	}
-	*/
+
 	public function dispatch($url,$regex) {
 		$parameters = [];
         preg_match_all('\'' . '{(\w+)}' . '\'', $regex, $matches);
@@ -49,7 +32,7 @@ class Route
             $matches[$key] = str_replace('{', '', $matches[$key]);
             $matches[$key] = str_replace('}', '', $matches[$key]);
         }
-        //Replace parameter names to transform URL to regex format.
+       
         $regex = preg_replace('%' . '{(\w+)}' . '%', '(\w+|\d+)', $regex);
         $regex .= '$';
         $regex = '%^' . $regex . '$%';
@@ -57,11 +40,14 @@ class Route
     
         if (!$res || $res == 0) return false;
         
-        $keyParams = array();
-        for ($i = 0; $i < count($matches); $i++) {
+        $params = array();
+        foreach($matches as $index=>$value){
+        	$params[$value] = $parameters[$index+1];
+        }
+/*        for ($i = 0; $i < count($matches); $i++) {
             $keyParams[$matches[$i]] = $parameters[$i + 1];
         }
-    
-        return $keyParams;
+*/    
+        return $params;
     }
 }
