@@ -8,7 +8,7 @@ use Src\Routes;
 use Src\Route;
 
 
-class RouteTest extends \PHPUnit_Framework_TestCase{
+class RouteTest extends \PHPUnit_Framework_TestCase {
 	
 	private $routes;	
 	
